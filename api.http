@@ -1,0 +1,235 @@
+// -------------- Product Metods --------------
+
+### Get Products
+GET http://localhost:8000/api/products
+Content-Type: application/json
+Accept: application/json
+
+### Create Productss
+POST http://localhost:8000/api/products
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "Audifonos",
+    "price": 6000,
+    "url": "Audifonos.jpg"
+}
+
+### Get a Product
+GET http://localhost:8000/api/products/3
+Content-Type: application/json
+Accept: application/json
+
+### Delete a Product
+DELETE  http://localhost:8000/api/products/2
+Content-Type: application/json
+Accept: application/json
+
+### Update Productss
+PUT  http://localhost:8000/api/products/1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "price": 10000,
+    "url": "Manzana.jpg"
+}
+
+
+
+
+// ---------- ListProducts Methods --------------
+
+
+
+### Create List
+POST http://localhost:8000/api/listProducts
+Content-Type: application/json
+Accept: application/json
+
+{
+    "products": [
+        {
+            "product_id": 1,
+            "quantity": 20
+        },
+        {
+            "product_id": 3,
+            "quantity": 5
+        }
+    ]
+}
+
+### Get Lists
+GET http://localhost:8000/api/listProducts
+Content-Type: application/json
+Accept: application/json
+
+### Get a Lists
+GET http://localhost:8000/api/listProducts/4
+Content-Type: application/json
+Accept: application/json
+
+### Delete a List
+DELETE  http://localhost:8000/api/listProducts/3
+Content-Type: application/json
+Accept: application/json
+
+
+### Update ProductList
+PUT  http://localhost:8000/api/listProducts/2
+Content-Type: application/json
+Accept: application/json
+
+{
+    "products": [
+        {
+            "product_id": 3,
+            "quantity": 1
+        }
+    ]
+}
+
+### Add a Product to a list
+POST http://localhost:8000/api/listProduct/addProduct/4
+Content-Type: application/json
+Accept: application/json
+
+{
+    "product_id": 1,
+    "quantity":10
+}
+
+### Delete a item from a List
+DELETE  http://localhost:8000/api/listProduct/removeProduct/4/12
+Content-Type: application/json
+Accept: application/json
+
+### update Product Quantity
+POST http://localhost:8000/api/listProduct/updateProductQuantity/4/13
+Content-Type: application/json
+Accept: application/json
+
+{
+    "quantity":6
+}
+
+
+
+// ---------------- Discount Methods ---------------------
+
+
+
+
+### Get Discount
+GET http://localhost:8000/api/discount
+Content-Type: application/json
+Accept: application/json
+
+### Create Discount
+POST http://localhost:8000/api/discount
+Content-Type: application/json
+Accept: application/json
+
+{
+    "porcent": 90,
+    "available": true
+}
+
+### Show Discount
+GET http://localhost:8000/api/discount/4
+Content-Type: application/json
+Accept: application/json
+
+### Delete a Discount
+DELETE http://localhost:8000/api/discount/3
+Content-Type: application/json
+Accept: application/json
+
+### Upade Discount
+PUT  http://localhost:8000/api/discount/2
+Content-Type: application/json
+Accept: application/json
+
+{
+    "available": false
+}
+
+
+
+// Clients Methods
+
+### Get Clients
+GET http://localhost:8000/api/clients
+Content-Type: application/json
+Accept: application/json
+
+### Create Clients
+POST http://localhost:8000/api/clients
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "Daniela",
+    "cash": 110000
+}
+
+### Update Client
+PUT http://localhost:8000/api/clients/1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "cash" : 7000
+}
+
+### Show a clients
+GET http://localhost:8000/api/clients/4
+Content-Type: application/json
+Accept: application/json
+
+### Delete a Client
+DELETE http://localhost:8000/api/clients/4
+Content-Type: application/json
+Accept: application/json
+
+
+// Orders Methods
+
+
+### Get Orders
+GET http://localhost:8000/api/orders
+Content-Type: application/json
+Accept: application/json
+
+### Create Order
+POST http://localhost:8000/api/orders
+Content-Type: application/json
+Accept: application/json
+
+{
+    "client_id":1,
+    "product_list_id":1,
+    "discount_id": 1
+}
+
+### Show a Order
+GET http://localhost:8000/api/orders/4
+Content-Type: application/json
+Accept: application/json
+
+### Delete a  Order
+DELETE  http://localhost:8000/api/orders/2
+Content-Type: application/json
+Accept: application/json
+
+### Update A Order
+PUT http://localhost:8000/api/orders/4
+Content-Type: application/json
+Accept: application/json
+
+{
+    "client_id":3,
+    "product_list_id":2
+}
