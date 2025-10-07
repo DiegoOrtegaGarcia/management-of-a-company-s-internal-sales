@@ -6,17 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\RegiterRequest;
+use App\Http\Requests\LoginRequest;
 use App\Models\User;
 
 class AuthenticationController extends Controller
 {
-    public function register(Request $request)
+    public function register(RegiterRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|min:3',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:6',
-        ]);
+        $request->validated();
 
         $user = User::create([
             'name' => $request->name,
@@ -28,14 +26,9 @@ class AuthenticationController extends Controller
         return response()->json(['message' => 'User registered successfully']);
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
-        ]);
-
-        if (!Auth::attempt($request->only('email', 'password'))) {
+        if (!Auth::attempt($request->validated())) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
