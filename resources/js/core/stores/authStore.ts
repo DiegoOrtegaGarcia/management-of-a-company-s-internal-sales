@@ -30,7 +30,7 @@ export const useAuthStore = create<AuthState>()(
         get().isAuthenticated,
     }),
     {
-      name: 'auth-storage', // Se guarda en localStorage
+      name: 'auth-storage',
     }
   )
 );

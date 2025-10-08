@@ -14,13 +14,14 @@ Route::post('login', [AuthenticationController::class, 'login']);
 Route::middleware('auth:api')->group(function () {
     Route::get('user', [AuthenticationController::class, 'userInfo']);
     Route::post('logout', [AuthenticationController::class, 'logOut']);
+    Route::apiResource("/clients",ClientController::class);
+    Route::apiResource("/products",ProductController::class);
+    Route::apiResource("/discount",DiscountsController::class);
+    Route::apiResource("/orders",OrdersController::class);
+    Route::apiResource("/listProducts",ProductListController::class);
+    Route::post("/listProduct/addProduct/{id}",[ProductListController::class,"addProduct"]);
+    Route::delete("/listProduct/removeProduct/{listId}/{itemId}",[ProductListController::class, "removeProduct"]);
+    Route::post("/listProduct/updateProductQuantity/{listId}/{itemId}", [ProductListController::class, "updateProductQuantity"]);
+
 });
 
-Route::apiResource("/products",ProductController::class);
-Route::apiResource("/discount",DiscountsController::class);
-Route::apiResource("/clients",ClientController::class);
-Route::apiResource("/orders",OrdersController::class);
-Route::apiResource("/listProducts",ProductListController::class);
-Route::post("/listProduct/addProduct/{id}",[ProductListController::class,"addProduct"]);
-Route::delete("/listProduct/removeProduct/{listId}/{itemId}",[ProductListController::class, "removeProduct"]);
-Route::post("/listProduct/updateProductQuantity/{listId}/{itemId}", [ProductListController::class, "updateProductQuantity"]);

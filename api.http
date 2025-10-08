@@ -161,7 +161,7 @@ Accept: application/json
 // Clients Methods
 
 ### Get Clients
-GET http://localhost:8000/api/clients
+GET http://localhost:8000/api/clients?page=1
 Content-Type: application/json
 Accept: application/json
 
@@ -171,7 +171,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "name": "Daniela",
+    "name": "Pepe Antonio",
     "cash": 110000
 }
 
@@ -185,7 +185,7 @@ Accept: application/json
 }
 
 ### Show a clients
-GET http://localhost:8000/api/clients/4
+GET http://localhost:8000/api/clients/1
 Content-Type: application/json
 Accept: application/json
 

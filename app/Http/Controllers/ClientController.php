@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
-use Illuminate\Http\Request;
 use App\Http\Resources\ClientsResource;
 use App\Http\Resources\ClientsCollection;
 use App\Http\Requests\ClientStorageRequest;
@@ -16,7 +15,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return response(new ClientsCollection(Client::all()));
+        return response(new ClientsCollection(Client::paginate(10)));
     }
 
     /**
@@ -25,7 +24,7 @@ class ClientController extends Controller
     public function store(ClientStorageRequest $request)
     {
         $client = Client::create($request->validated());
-        return response()->json(["message" => "Created", "product"=> new ClientsResource($client)]);
+        return response()->json(["message" => "Created", "product" => new ClientsResource($client)]);
     }
 
     /**
@@ -57,7 +56,7 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        $client -> delete();
-        return response()->json(["message"=>"Client Deleted Correctly"]);
+        $client->delete();
+        return response()->json(["message" => "Client Deleted Correctly"]);
     }
 }

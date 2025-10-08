@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Http\Resources\ClientsResource;
 
 class ClientsCollection extends ResourceCollection
 {
@@ -14,6 +15,14 @@ class ClientsCollection extends ResourceCollection
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'data' => ClientsResource::collection($this->collection),
+            'pagination' => [
+                'currentPage' => $this->currentPage(),
+                'lastPage' => $this->lastPage(),
+                'perPage' => $this->perPage(),
+                'total' => $this->total(),
+            ]
+        ];
     }
 }

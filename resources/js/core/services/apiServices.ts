@@ -11,7 +11,6 @@ const apiService = axios.create({
 apiService.interceptors.request.use(
   config => {
     const token = getAuthCookies()
-    console.log(token)
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }

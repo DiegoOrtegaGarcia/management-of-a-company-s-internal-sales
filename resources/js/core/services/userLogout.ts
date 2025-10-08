@@ -2,6 +2,7 @@
 import apiService from "./apiServices"
 import { removeAuthCookies } from "../utils/userCookies"
 import { useAuthStore } from "../stores/authStore"
+import { router } from '@inertiajs/react';
 
 export const userLogout = async () => {
     try {
@@ -11,6 +12,6 @@ export const userLogout = async () => {
     } finally {
         removeAuthCookies()
         useAuthStore.getState().setIsNotAuthenticated()
-        window.location.href = '/login'
+        router.visit('/login');
     }
 }
