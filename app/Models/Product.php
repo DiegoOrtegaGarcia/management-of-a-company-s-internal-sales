@@ -10,6 +10,17 @@ class Product extends Model
 
     protected $fillable = ['name', 'price', 'url'];
 
+    public function getImageUrlAttribute($value)
+    {
+        if (!$value) {
+            return null;
+        }
+        if (filter_var($value, FILTER_VALIDATE_URL)) {
+            return $value;
+        }
+        return Storage::url($value);
+    }
+
     public function productListItems()
     {
         return $this->hasMany(ProductListItem::class);

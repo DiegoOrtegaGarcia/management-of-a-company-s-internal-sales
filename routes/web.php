@@ -31,3 +31,9 @@ Route::get('/client/{id}', function ($id) {
 Route::get('/products', function () {
     return Inertia::render('Produtcs/ProductsPage');
 })->name('clients');
+
+Route::get('/products/{id}', function ($id) {
+    return Inertia::render('Produtcs/ProductEditPage', [
+        'id' => $id
+    ]);
+})->name('productsEdit');

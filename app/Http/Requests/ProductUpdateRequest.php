@@ -24,7 +24,7 @@ class ProductUpdateRequest extends FormRequest
         return [
             'name'=>"sometimes|string",
             'price'=>"sometimes|integer",
-            'url' => "sometimes|string"
+            'url' => "sometimes|image|mimes:jpeg,png,jpg,gif,webp|max:2048"
         ];
     }
 }

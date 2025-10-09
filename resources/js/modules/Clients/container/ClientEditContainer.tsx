@@ -7,7 +7,7 @@ export const ClientEditContainer=({id}: {id:number}) => {
     if (error) {
             return (
                 <div className="min-h-screen bg-gray-50 py-8">
-                    <ErrorAlert error={error} clearError={clearError} title={errorTitle} urlBack=""/>
+                    <ErrorAlert error={error} clearError={clearError} title={errorTitle} urlBack="/clients"/>
                 </div>
             );
         }

@@ -24,7 +24,7 @@ class ProductStorageRequest extends FormRequest
         return [
             'name'=>"required|string",
             'price'=>"required|integer",
-            'url' => "required|string"
+            'url' => "sometimes|image|mimes:jpeg,png,jpg,gif,webp|max:2048"
         ];
     }
 }

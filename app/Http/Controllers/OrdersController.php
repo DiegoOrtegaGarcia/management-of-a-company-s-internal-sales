@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Orders;
-use App\Models\ProductList;
-use App\Models\Client;
-use App\Models\Discounts;
-use Illuminate\Http\Request;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\OrderCollection;
 use App\Http\Requests\OrderStorageRequest;
 use App\Http\Requests\OrderUpdateRequest;
+
 class OrdersController extends Controller
 {
     /**
@@ -18,7 +15,7 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        return response()->json(["orders"=> new OrderCollection(Orders::all())]);
+        return response()->json(["orders" => new OrderCollection(Orders::all())]);
     }
 
 
@@ -91,7 +88,7 @@ class OrdersController extends Controller
     public function destroy($id)
     {
         $order = Orders::findOrFail($id);
-        $order -> delete();
-        return response()->json(["message"=>"Order Deleted Correctly"]);
+        $order->delete();
+        return response()->json(["message" => "Order Deleted Correctly"]);
     }
 }
