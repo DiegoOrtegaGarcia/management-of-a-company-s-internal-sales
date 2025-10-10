@@ -16,6 +16,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('logout', [AuthenticationController::class, 'logOut']);
     Route::apiResource("/clients",ClientController::class);
     Route::apiResource("/products",ProductController::class);
+    Route::post('products/{id}', [ProductController::class, 'update']);
     Route::apiResource("/discount",DiscountsController::class);
     Route::apiResource("/orders",OrdersController::class);
     Route::apiResource("/listProducts",ProductListController::class);

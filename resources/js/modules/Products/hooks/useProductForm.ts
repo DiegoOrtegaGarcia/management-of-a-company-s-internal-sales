@@ -1,19 +1,24 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ProductFormData, ProductInterface } from "../types/productsTypes";
+import {ProductInterface } from "../types/productsTypes";
 import { getProductService } from "../services/getProductService";
 import { createProductService } from "../services/createProductService";
 import { updateProductService } from "../services/updateProductService";
 import { router } from "@inertiajs/react";
-import { productFormSchema } from "../schemas/productFormSchemas";
+import { getProductFormSchema } from "../schemas/productFormSchemas";
+import z from "zod";
 
 export const useProductForm = (setError: (state: string) => void, setErrorTitle: (state: string) => void, id?: number) => {
   const [product, setProduct] = useState<ProductInterface | null>(null);
   const [loadingProduct, setLoadingProduct] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  const {register,handleSubmit,formState: { errors, isSubmitting, isValid },watch,reset,setValue,trigger,} = useForm<ProductFormData>({resolver: zodResolver(productFormSchema),mode: 'onChange',defaultValues: {  name: '',  price: 0}});
+  const isEdit = Boolean(id);
+  const schema = getProductFormSchema(isEdit);
+  type FormData = z.infer<typeof schema>;
+
+  const {register,handleSubmit,formState: { errors, isSubmitting, isValid },watch,reset,setValue,trigger,} = useForm<FormData>({resolver: zodResolver(schema),mode: 'onChange',defaultValues: {  name: '',  price: 0,url: undefined}});
 
   const currentImage = watch('url');
   const currentName = watch('name');
@@ -36,7 +41,7 @@ export const useProductForm = (setError: (state: string) => void, setErrorTitle:
     }
   };
 
-  const handleFormSubmit = async (data: ProductFormData) => {
+  const handleFormSubmit = async (data: FormData) => {
     try {
       if (id) {
         await updateProductService(id, data);

@@ -18,8 +18,6 @@ class OrdersController extends Controller
         return response()->json(["orders" => new OrderCollection(Orders::all())]);
     }
 
-
-
     /**
      * Store a newly created resource in storage.
      */
@@ -50,37 +48,19 @@ class OrdersController extends Controller
      */
     public function update(OrderUpdateRequest $request, $id)
     {
-        $order = Orders::findOrFail($id);
-
-        $newOrder = Orders::createOrder(
-            $request->client_id ?? $order->client_id,
-            $request->product_list_id ?? $order->product_list_id,
-            $request->discount_id ?? $order->discount_id
-        );
-
-        $updateData = [];
-
-        if ($request->has('discount_id')) {
-            $updateData['discount_id'] = $newOrder->discount_id;
+        if ($request->has('discount_id') && $request->discount_id != $order->discount_id) {
+            $updateData['discount_id'] = $request->discount_id;
         }
-        $updateData['client_id'] = $newOrder->client_id;
-        $updateData['product_list_id'] = $newOrder->product_list_id;
-        $updateData['subtotal'] = $newOrder->subtotal;
-        $updateData['discount_amount'] = $newOrder->discount_amount;
-        $updateData['total_amount'] = $newOrder->total_amount;
-
-
-        $order->update($updateData);
-
-        $newOrder->delete();
-
-        $updatedOrder = Orders::with(['client', 'productList.items', 'discount'])->find($id);
-
+        if (!empty($updateData)) {
+            $order->update($updateData);
+            $order->calculateTotals();
+        }
+        $order->load(['client', 'productList.items', 'discount']);
         return response()->json([
             'message' => 'Order updated successfully',
-            'order' => new OrderResource($updatedOrder)
+            'order' => new OrderResource($order)
         ]);
-    }
+    };
 
     /**
      * Remove the specified resource from storage.

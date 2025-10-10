@@ -8,6 +8,7 @@ use App\Http\Resources\ProductCollection;
 use App\Http\Requests\ProductStorageRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -54,34 +55,26 @@ class ProductController extends Controller
      */
     public function update(ProductUpdateRequest $request, $id)
     {
-        $oldProduct = Product::findOrFail($id);
-        $validatedData = $request->validated();
+        DB::transaction(function () use ($request, $id) {
+            $product = Product::findOrFail($id);
+            $validatedData = $request->validated();
 
-        $newProductData = [
-            'name' => $validatedData['name'] ?? $oldProduct->name,
-            'price' => $validatedData['price'] ?? $oldProduct->price,
-        ];
-
-        if ($request->hasFile('url')) {
-            $imagePath = $request->file('url')->store('products', 'public');
-            $newProductData['url'] = $imagePath;
-        } else {
-            $newProductData['url'] = $oldProduct->url;
-        }
-
-        $newProduct = Product::create($newProductData);
-
-        $data = [
-            "name" => $newProduct->name,
-            "price" => $newProduct->price,
-            "url" => $newProduct->url
-        ];
-
-        $oldProduct->update($data);
-
+            if ($request->hasFile('url')) {
+                if ($product->url && !filter_var($product->url, FILTER_VALIDATE_URL)) {
+                    Storage::disk('public')->delete($product->url);
+                }
+                $imagePath = $request->file('url')->store('products', 'public');
+                $validatedData['url'] = $imagePath;
+            } else {
+                unset($validatedData['url']);
+            }
+            $product->update($validatedData);
+            $product->save();
+        });
+        $updatedProduct = Product::findOrFail($id);
         return response()->json([
-            "message" => "Product Updated",
-            "product" => new ProductResource($oldProduct)
+            "message" => "Product Updated Successfully",
+            "product" => new ProductResource($updatedProduct)
         ]);
     }
 

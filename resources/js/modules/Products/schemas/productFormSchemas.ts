@@ -1,6 +1,7 @@
+
 import { z } from 'zod';
 
-export const productFormSchema = z.object({
+const baseProductSchema = z.object({
   name: z
     .string()
     .min(1, 'El nombre es requerido')
@@ -9,11 +10,27 @@ export const productFormSchema = z.object({
 
   price: z
     .number()
-    .min(0, 'El precio no puede ser negativo')
+    .min(1, 'El precio debe ser al menos 1 centavo')
     .max(1000000, 'El precio es demasiado alto'),
-
-  url: z
-    .instanceof(File)
-    .refine(file => !file || file.size <= 2 * 1024 * 1024, 'La imagen debe ser menor a 2MB')
-    .refine(file => !file || ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'].includes(file.type), 'Solo se permiten imágenes JPEG, PNG, GIF o WebP')
 });
+
+export const productCreateSchema = baseProductSchema.extend({
+  url: z
+    .instanceof(File, { message: 'La imagen es requerida' })
+    .refine(file => file.size <= 2 * 1024 * 1024, 'La imagen debe ser menor a 2MB')
+    .refine(file => ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'].includes(file.type),
+            'Solo se permiten imágenes JPEG, PNG, GIF o WebP')
+});
+
+export const productUpdateSchema = baseProductSchema.extend({
+  url: z.union([
+    z.instanceof(File)
+      .refine(file => file.size <= 2 * 1024 * 1024, 'La imagen debe ser menor a 2MB')
+      .refine(file => ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'].includes(file.type),
+              'Solo se permiten imágenes JPEG, PNG, GIF o WebP'),
+    z.string().optional()
+  ]).optional()
+});
+
+
+export const getProductFormSchema = (isEdit: boolean) => isEdit ? productUpdateSchema : productCreateSchema;

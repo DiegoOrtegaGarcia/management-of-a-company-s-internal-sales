@@ -3,8 +3,7 @@ import { ProductFormData } from "../types/productsTypes";
 
 export const updateProductService = async (id: number, formData:ProductFormData) => {
   try {
-    console.log(formData)
-    const response = await apiService.put(`products/${id}`, formData, {
+    const response = await apiService.post(`products/${id}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

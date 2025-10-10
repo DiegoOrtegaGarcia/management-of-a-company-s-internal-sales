@@ -1,9 +1,4 @@
-// types/productsTypes.ts
-export interface ProductFormData {
-  name: string;
-  price: number;
-  url: File;
-}
+export type ProductFormData = z.core.output<z.ZodObject<{url: z.ZodOptional<z.ZodUnion<readonly [z.ZodCustom<File, File>, z.ZodOptional<z.ZodString>]>>;}, z.core.$strip> | z.ZodObject<{name: z.ZodString;price: z.ZodNumber;url: z.ZodCustom<File, File>;}, z.core.$strip>>
 
 export interface ProductInterface {
   id: number;
@@ -24,3 +19,4 @@ export interface ProductCardProps {
   setError: (state: string | null) => void;
   setErrorTitle: (state: string) => void;
 }
+
